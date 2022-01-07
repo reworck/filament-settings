@@ -1,0 +1,33 @@
+{
+    "name": "reworck/filament-settings",
+    "description": "Manage your settings in filament for spatie/valuestore",
+    "authors": [
+        {
+            "name": "quintenbuis",
+            "email": "quinten@reworck.nl",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "spatie/valuestore": "^1.2",
+        "livewire/livewire": "^v2.8.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Reworck\\FilamentSettings\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ShuvroRoy\\FilamentSettings\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Reworck\\FilamentSettings\\FilamentSettingsProvider"
+            ]
+        }
+    }
+}
