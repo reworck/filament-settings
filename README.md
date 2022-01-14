@@ -13,11 +13,6 @@ return [
 
     // Path to the file to be used as storage
     'path' => storage_path('app/settings.json'),
-
-    // The fields to be stored
-    'fields' => [
-        \Filament\Forms\Components\TextInput::make('title')
-    ]
 ];
 ```
 
@@ -40,8 +35,12 @@ php artisan vendor:publish --tag=filament-settings-views
 
 ## Usage
 
-To use this package fill in the `fields` array in the published config file.
-When saving the form the contents will be stored inside the specified file.
+Define your fields by adding the following in the `boot` method of your `AppServiceProvider`
+```php
+\Reworck\FilamentSettings\FilamentSettings::setFormFields([
+    \Filament\Forms\Components\TextInput::make('title'),
+]);
+```
 
 After that you can access your values as you usually would using [spatie/valuestore](https://github.com/spatie/valuestore)
 

@@ -18,18 +18,4 @@ class FilamentSettingsProvider extends PluginServiceProvider
             Settings::class,
         ];
     }
-
-    public function packageBooted(): void
-    {
-        parent::packageBooted();
-
-        Livewire::component(RenderValues::getName(), RenderValues::class);
-    }
-
-    public function configurePackage(Package $package): void
-    {
-        parent::configurePackage($package);
-
-        $package->hasConfigFile('filament-settings');
-    }
 }
