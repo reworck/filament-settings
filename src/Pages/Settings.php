@@ -55,4 +55,9 @@ class Settings extends Page implements HasForms
     {
         return config('filament-settings.label');
     }
+
+    protected static function shouldRegisterNavigation(): bool
+    {
+        return auth()->user()->canManageSettings() ?? true;
+    }
 }
