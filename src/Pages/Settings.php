@@ -58,6 +58,6 @@ class Settings extends Page implements HasForms
 
     protected static function shouldRegisterNavigation(): bool
     {
-        return auth()->user()->canManageSettings() ?? true;
+        return auth()->user()?->canManageSettings() ?? true;
     }
 }
