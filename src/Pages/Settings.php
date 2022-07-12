@@ -37,6 +37,8 @@ class Settings extends Page implements HasForms
 
     public function submit(): void
     {
+        $this->validate();
+
         foreach ($this->data as $key => $data) {
             Valuestore::make(
                 config('filament-settings.path')
