@@ -60,6 +60,11 @@ class Settings extends Page implements HasForms
 
     protected static function shouldRegisterNavigation(): bool
     {
+        // If method canManageSettings is not defined on the user model, assume users are allowed to manage settings
+        if(auth()->user() && !method_exists(auth()->user(), 'canManageSettings')) {
+            return true;
+        }
+
         return auth()->user()?->canManageSettings() ?? true;
     }
 }
