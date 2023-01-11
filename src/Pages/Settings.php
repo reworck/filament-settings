@@ -5,6 +5,7 @@ namespace Reworck\FilamentSettings\Pages;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Pages\Page;
+use Illuminate\Support\Str;
 use Reworck\FilamentSettings\FilamentSettings;
 use Spatie\Valuestore\Valuestore;
 
@@ -45,7 +46,12 @@ class Settings extends Page implements HasForms
             )->put($key, $data);
         }
 
-        $this->notify('success', 'Saved!');
+        $this->notify('success', __('settings.saved'));
+    }
+
+    protected static function getNavigationIcon(): string
+    {
+        return config('filament-settings.icon') ?? $this->navigationIcon;
     }
 
     protected static function getNavigationGroup(): ?string
@@ -58,8 +64,29 @@ class Settings extends Page implements HasForms
         return config('filament-settings.label');
     }
 
+    protected static function getNavigationSort(): ?int
+    {
+        return config('filament-settings.sort');
+    }
+
+    public static function getSlug(): string
+    {
+        return config('filament-settings.slug') ?? (string) Str::of(class_basename(static::class))
+            ->lower();
+    }
+
+    protected function getTitle(): string
+    {
+        return config('filament-settings.title') ?? (string) Str::of(class_basename(static::class))
+            ->kebab()
+            ->replace('-', ' ')
+            ->title();
+    }
+
     protected static function shouldRegisterNavigation(): bool
     {
         return auth()->user()?->canManageSettings() ?? true;
     }
+
+
 }
