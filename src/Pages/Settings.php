@@ -45,7 +45,7 @@ class Settings extends Page implements HasForms
             )->put($key, $data);
         }
 
-        $this->notify('success', 'Saved!');
+        $this->notify('success', trans('Saved!'));
     }
 
     protected static function getNavigationGroup(): ?string
