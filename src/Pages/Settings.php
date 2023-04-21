@@ -45,7 +45,7 @@ class Settings extends Page implements HasForms
             )->put($key, $data);
         }
 
-        $this->notify('success', 'Saved!');
+        $this->notify('success', trans('Saved!'));
     }
 
     protected static function getNavigationGroup(): ?string
@@ -56,6 +56,10 @@ class Settings extends Page implements HasForms
     protected static function getNavigationLabel(): string
     {
         return config('filament-settings.label');
+    }
+
+    public function getTitle(): string {
+        return config("filament-settings.title");
     }
 
     protected static function shouldRegisterNavigation(): bool
