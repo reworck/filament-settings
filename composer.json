@@ -18,11 +18,6 @@
             "Reworck\\FilamentSettings\\": "src"
         }
     },
-    "autoload-dev": {
-        "psr-4": {
-            "ShuvroRoy\\FilamentSettings\\Tests\\": "tests"
-        }
-    },
     "extra": {
         "laravel": {
             "providers": [
