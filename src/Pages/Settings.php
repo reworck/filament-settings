@@ -7,14 +7,21 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Pages\Page;
 use Reworck\FilamentSettings\FilamentSettings;
 use Spatie\Valuestore\Valuestore;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 
 class Settings extends Page implements HasForms
 {
     use InteractsWithForms;
+    use HasPageShield;
 
     public array $data;
     protected static ?string $navigationIcon = 'heroicon-o-cog';
     protected static string $view = 'filament-settings::pages.settings';
+
+
+    protected function getShieldRedirectPath(): string {
+        return '/admin';
+    }
 
     protected function getFormStatePath(): string
     {
