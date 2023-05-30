@@ -58,7 +58,8 @@ class Settings extends Page implements HasForms
         return config('filament-settings.label');
     }
 
-    public function getTitle(): string {
+    public function getTitle(): string 
+    {
         return config("filament-settings.title");
     }
 
