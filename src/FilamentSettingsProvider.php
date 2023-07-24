@@ -15,7 +15,7 @@ class FilamentSettingsProvider extends PluginServiceProvider
     protected function getPages(): array
     {
         return [
-            Settings::class,
+            config('filament-settings.page') ?? Settings::class,
         ];
     }
 }
