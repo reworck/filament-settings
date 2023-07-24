@@ -11,7 +11,7 @@
     "require": {
         "php": "^8.0",
         "spatie/valuestore": "^1.2",
-        "livewire/livewire": "^v2.8.2"
+        "livewire/livewire": "^v3.0.0-beta.3"
     },
     "autoload": {
         "psr-4": {
