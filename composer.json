@@ -11,7 +11,7 @@
     "require": {
         "php": "^8.0",
         "spatie/valuestore": "^1.2",
-        "livewire/livewire": "^v2.8.2"
+        "livewire/livewire": "^3.0"
     },
     "autoload": {
         "psr-4": {
@@ -21,7 +21,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Reworck\\FilamentSettings\\FilamentSettingsProvider"
+                "Reworck\\FilamentSettings\\FilamentSettingsServiceProvider"
             ]
         }
     }
