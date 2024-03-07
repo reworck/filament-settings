@@ -134,7 +134,7 @@ class Settings extends Page implements HasForms
         return config('filament-settings.hasFullWidthFormActions');
     }
 
-    public static function shouldRegisterNavigation(): bool
+    public static function canAccess(): bool
     {
         return auth()->user()?->canManageSettings() ?? true;
     }
