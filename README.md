@@ -5,14 +5,23 @@ This package allows for easy setting management using [Spatie's ValueStore packa
 ## Content of the configuration file
 ```php
 return [
-    // Group the menu item belongs to
-    'group' => 'Settings',
-
-    // Sidebar label
-    'label' => 'Settings',
-
     // Path to the file to be used as storage
     'path' => storage_path('app/settings.json'),
+
+    // Label position on the page
+    'inlineLabel' => true,
+
+    // Number of columns on the page
+    'columns' => 2,
+
+    // Max content width on the page
+    'maxContentWidth' => '7xl', // 'full'
+
+    // Navigation sidebar icon
+    'navigationIcon' => 'heroicon-o-wrench-screwdriver',
+
+    // Form action buttons full width
+    'hasFullWidthFormActions' => false,
 ];
 ```
 
@@ -42,7 +51,11 @@ Define your fields by adding the following in the `boot` method of your `AppServ
 ]);
 ```
 
-After that you can access your values as you usually would using [spatie/valuestore](https://github.com/spatie/valuestore)
+After that you can access your values as:
+```php
+\Reworck\FilamentSettings\FilamentSettings::value('title', 'Some title')
+```
+You can pass fallback value as a second argument (ex.`'Some title'`).
 
 ### Hiding the page for users
 

@@ -1,10 +1,9 @@
-<x-filament::page>
-    <form wire:submit.prevent="submit">
-
+<x-filament-panels::page>
+    <x-filament-panels::form wire:submit="submit">
         {{ $this->form }}
-
-        <x-tables::button type="submit" class="mt-2">
-            @lang('Save')
-        </x-tables::button>
-    </form>
-</x-filament::page>
+        <x-filament-panels::form.actions
+            :actions="$this->getFormActions()"
+            :full-width="$this->hasFullWidthFormActions()"
+        />
+    </x-filament-panels::form>
+</x-filament-panels::page>

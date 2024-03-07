@@ -2,68 +2,139 @@
 
 namespace Reworck\FilamentSettings\Pages;
 
-use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Actions\Action;
+use Filament\Facades\Filament;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Form;
+use Filament\Notifications\Notification;
+use Filament\Pages\Concerns\InteractsWithFormActions;
 use Filament\Pages\Page;
+use Filament\Panel;
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Validation\ValidationException;
 use Reworck\FilamentSettings\FilamentSettings;
 use Spatie\Valuestore\Valuestore;
 
 class Settings extends Page implements HasForms
 {
-    use InteractsWithForms;
+    use InteractsWithFormActions;
 
-    public array $data;
-    protected static ?string $navigationIcon = 'heroicon-o-cog';
+    /**
+     * @var array<string, mixed> | null
+     */
+    public ?array $data = [];
+
+    protected static ?int $navigationSort = 100;
+
     protected static string $view = 'filament-settings::pages.settings';
 
-    protected function getFormStatePath(): string
+    public function getMaxContentWidth(): ?string
     {
-        return 'data';
+        return config('filament-settings.maxContentWidth');
     }
 
-    protected function getFormSchema(): array
+    public function getTitle(): string | Htmlable
     {
-        return FilamentSettings::$fields;
+        return __('filament-settings::filament-settings.title');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('filament-settings::filament-settings.label');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('filament-settings::filament-settings.group');
+    }
+
+    protected function getSavedNotificationTitle(): ?string
+    {
+        return __('filament-panels::pages/auth/edit-profile.notifications.saved.title');
+    }
+
+    public static function getNavigationIcon(): ?string
+    {
+        return static::$navigationIcon
+            ?? config('filament-settings.navigationIcon')
+            ?? (Filament::hasTopNavigation() ? 'heroicon-m-home' : 'heroicon-o-home');
+    }
+
+    public static function routes(Panel $panel): void
+    {
+        $slug = static::getSlug();
+        Route::get("/{$slug}", static::class)
+            ->middleware(static::getRouteMiddleware($panel))
+            ->withoutMiddleware(static::getWithoutRouteMiddleware($panel))
+            ->name('settings');
+    }
+
+    public function form(Form $form): Form
+    {
+        return $form
+            ->schema(FilamentSettings::$fields)
+            ->statePath('data')
+            ->inlineLabel(config('filament-settings.inlineLabel'))
+            ->operation('edit')
+            ->columns(config('filament-settings.columns'));
     }
 
     public function mount(): void
     {
         $this->form->fill(
-            Valuestore::make(
-                config('filament-settings.path')
-            )->all()
+            Valuestore::make(config('filament-settings.path'))->all()
         );
     }
 
+    /**
+     * @throws ValidationException
+     */
     public function submit(): void
     {
         $this->validate();
-
         foreach ($this->data as $key => $data) {
-            Valuestore::make(
-                config('filament-settings.path')
-            )->put($key, $data);
+            Valuestore::make(config('filament-settings.path'))->put($key, $data);
         }
-
-        $this->notify('success', trans('Saved!'));
+        $this->getSavedNotification()?->send();
     }
 
-    protected static function getNavigationGroup(): ?string
+    protected function getSavedNotification(): ?Notification
     {
-        return config('filament-settings.group');
+        $title = $this->getSavedNotificationTitle();
+        return blank($title) ? null : Notification::make()->success()->title($title);
     }
 
-    protected static function getNavigationLabel(): string
+    protected function getFormActions(): array
     {
-        return config('filament-settings.label');
+        return [
+            $this->getSaveFormAction(),
+            $this->getCancelFormAction(),
+        ];
     }
 
-    public function getTitle(): string 
+    protected function getSaveFormAction(): Action
     {
-        return config("filament-settings.title");
+        return Action::make('save')
+            ->label(__('filament-panels::pages/auth/edit-profile.form.actions.save.label'))
+            ->submit('submit')
+            ->keyBindings(['mod+s']);
     }
 
-    protected static function shouldRegisterNavigation(): bool
+    protected function getCancelFormAction(): Action
+    {
+        return Action::make('back')
+            ->label(__('filament-panels::pages/auth/edit-profile.actions.cancel.label'))
+            ->url(filament()->getUrl())
+            ->color('gray');
+    }
+
+    protected function hasFullWidthFormActions(): bool
+    {
+        return config('filament-settings.hasFullWidthFormActions');
+    }
+
+    public static function canAccess(): bool
     {
         return auth()->user()?->canManageSettings() ?? true;
     }
